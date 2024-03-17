@@ -1,20 +1,15 @@
-name: Discord Webhook Messages
-on:
-  push:
-    branches: 
-      - '*'
+on: 
+  workflow_dispatch:
+    inputs:
+        message:
+name: Bot
 jobs:
-  run:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run Discord Webhook
-        uses: bythope/discord-webhook-messages@v1.1.0
-        with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          handler: 'push'
-      - name: Discord notification
-        uses: cl8dep/action-discord@v0
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: 'Hello World'
+        - uses: Ilshidur/action-discord@master
+          with:
+           args: "${{ github.event.inputs.message }}"
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}

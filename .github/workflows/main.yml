@@ -1,0 +1,23 @@
+name: Discord Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send Discord Notification
+      uses: linuxathon/discord-action@v1
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        username: GitHub Actions
+        title: ${{ github.repository }}
+        message: |
+          **Branch**: ${{ github.ref }}
+          **Commit**: ${{ github.sha }}
+          **Author**: ${{ github.actor }}
+          **Action**: ${{ github.event_name }}

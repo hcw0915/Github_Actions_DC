@@ -1,23 +1,15 @@
-name: Discord Notification
-
+name: Discord Webhook Messages
 on:
   push:
-    branches:
-      - main
-
+    branches: 
+      - '*'
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Send Discord Notification
-      uses: sarisia/actions-status-discord@v1.14.0
-      with:
-        webhook: ${{ secrets.DISCORD_WEBHOOK }}
-        username: GitHub Actions
-        title: ${{ github.repository }}
-        message: |
-          **Branch**: ${{ github.ref }}
-          **Commit**: ${{ github.sha }}
-          **Author**: ${{ github.actor }}
-          **Action**: ${{ github.event_name }}
+      - uses: actions/checkout@v2
+      - name: Run Discord Webhook
+        uses: bythope/discord-webhook-messages@v1.1.0
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          handler: 'push'
